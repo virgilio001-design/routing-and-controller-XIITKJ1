@@ -20,13 +20,13 @@ use Illuminate\Support\Facades\Route;
 Route::name('students.')->prefix('students')->group(function () {
     Route::get('/', [StudentController::class, 'index'])->name('index');
 
-    Route::get('/{id}', [StudentController::class, 'show'])->name('show');
-
     Route::get('/create', [StudentController::class, 'create'])->name('create');
 
-    Route::get('/{id}/edit', [StudentController::class, 'edit'])->name('edit');
-
     Route::post('/', [StudentController::class, 'store'])->name('store');
+
+    Route::get('/{id}', [StudentController::class, 'show'])->name('show');
+
+    Route::get('/{id}/edit', [StudentController::class, 'edit'])->name('edit');
 
     Route::put('/{id}', [StudentController::class, 'update'])->name('update');
 
@@ -37,13 +37,13 @@ Route::name('students.')->prefix('students')->group(function () {
 Route::name('teachers.')->prefix('teachers')->group(function () {
     Route::get('/', [TeacherController::class, 'index'])->name('index');
 
-    Route::get('/{id}', [TeacherController::class, 'show'])->name('show');
-
     Route::get('/create', [TeacherController::class, 'create'])->name('create');
 
-    Route::get('/{id}/edit', [TeacherController::class, 'edit'])->name('edit');
-
     Route::post('/', [TeacherController::class, 'store'])->name('store');
+
+    Route::get('/{id}', [TeacherController::class, 'show'])->name('show');
+
+    Route::get('/{id}/edit', [TeacherController::class, 'edit'])->name('edit');
 
     Route::put('/{id}', [TeacherController::class, 'update'])->name('update');
 
@@ -54,13 +54,13 @@ Route::name('teachers.')->prefix('teachers')->group(function () {
 Route::name('classes.')->prefix('classes')->group(function () {
     Route::get('/', IndexController::class)->name('index');
 
-    Route::get('/{id}', ShowController::class, 'show')->name('show');
-
     Route::get('/create', CreateController::class, 'create')->name('create');
 
-    Route::get('/{id}/edit', EditController::class, 'edit')->name('edit');
+        Route::post('/', StoreController::class, 'store')->name('store');
 
-    Route::post('/', StoreController::class, 'store')->name('store');
+    Route::get('/{id}', ShowController::class, 'show')->name('show');
+
+    Route::get('/{id}/edit', EditController::class, 'edit')->name('edit');
 
     Route::put('/{id}', UpdateController::class, 'update')->name('update');
 
