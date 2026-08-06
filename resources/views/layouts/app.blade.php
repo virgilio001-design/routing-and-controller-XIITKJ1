@@ -14,7 +14,7 @@
 <body class="flex min-h-screen flex-col bg-[#F7F6F2] text-slate-700">
 
     {{-- Header Start--}}
-    @include('layouts.partial.header')
+    @include('layouts.partials.header')
     {{-- Header End --}}
     
     {{-- Content Start --}}
@@ -24,7 +24,7 @@
     {{-- Content End --}}
 
     {{-- Footer Start --}}
-    @include('layouts.partial.footer')
+    @include('layouts.partials.footer')
     {{-- Footer End --}}
 
 </body>
