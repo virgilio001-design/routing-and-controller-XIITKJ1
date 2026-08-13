@@ -12,15 +12,15 @@ class StudentController extends Controller
         $students = [
             [
                 'id' => 1,
-                'nis' => '1001',
-                'name' => 'Andi',
-                'class'=> 'XII TKJ 1',
-                'major'=> 'TKJ',
+                'nis' => '2024001',
+                'name' => 'Budi Ariyanto',
+                'class'=> 'XII AKL 1',
+                'major'=> 'AKL',
             ],
 
              [
-                'id' => 1,
-                'nis' => '1001',
+                'id' => 2,
+                'nis' => '2024002',
                 'name' => 'Andi',
                 'class'=> 'XII TKJ 1',
                 'major'=> 'TKJ',
