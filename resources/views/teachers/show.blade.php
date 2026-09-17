@@ -33,7 +33,7 @@
                 </div>
                 <div class="flex justify-between px-8 py-4">
                     <dt class="uppercase tracking-[0.1em] text-xs text-slate-400">Mata Pelajaran</dt>
-                    <dd class="font-medium text-[#16213A]">AKL</dd>
+                    <dd class="font-medium text-[#16213A]">Akuntansi Dasar</dd>
                 </div>
                 <div class="flex justify-between px-8 py-4">
                     <dt class="uppercase tracking-[0.1em] text-xs text-slate-400">No. Telepon</dt>
@@ -41,7 +41,7 @@
                 </div>
                 <div class="flex justify-between px-8 py-4">
                     <dt class="uppercase tracking-[0.1em] text-xs text-slate-400">Status</dt>
-                    <dd class="font-medium text-[#16213A]">Aktif</dd>
+                    <dd><x-status-badge status="Aktif" /></dd>
                 </div>
             </dl>
 

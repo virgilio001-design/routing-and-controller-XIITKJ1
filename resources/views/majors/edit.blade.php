@@ -21,7 +21,7 @@
 
         <div>
             <label for="name" class="mb-1.5 block text-xs font-semibold uppercase tracking-[0.1em] text-[#16213A]">Nama
-                Lengkap</label>
+                Jurusan</label>
             <input type="text" id="name" name="name" value="Akuntansi dan Keuangan Lembaga"
                 class="w-full border border-[#D9D6CD] bg-[#FCFBF8] px-3.5 py-2.5 text-sm focus:border-[#A16207] focus:bg-white focus:outline-none">
         </div>
