@@ -2,73 +2,100 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Student\StoreRequest;
+use App\Http\Requests\Student\UpdateRequest;
+use App\Models\Student;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request): View
     {
-        $title = "Sistem Sekolah - Daftar Siswa";
-        $students = [
-            [
-                'id' => 1,
-                'nis' => '2024001',
-                'name' => 'Budi Ariyanto',
-                'class'=> 'XII AKL 1',
-                'major'=> 'AKL',
-            ],
+        $title = 'Sistem Sekolah - Daftar Siswa';
+        $search = $request->query('search');
+        $class = $request->query('class');
+        $major = $request->query('major');
 
-             [
-                'id' => 2,
-                'nis' => '2024002',
-                'name' => 'Andi',
-                'class'=> 'XII TKJ 1',
-                'major'=> 'TKJ',
-            ],
-        ];
+        $students = Student::select(['id', 'nis', 'name', 'email', 'class', 'major'])
+            ->when($search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('nis', 'like', "%{$search}%");
+                });
+            })
+            ->when($class, fn ($query, $class) => $query->where('class', '=', $class))
+            ->when($major, fn ($query, $major) => $query->where('major', '=', $major))
+            ->paginate(10)
+            ->withQueryString();
+
+        $schoolClasses = ['10 AKL', '11 AKL', '11 TKJ 1', '11 TKJ 2', '10 BiD', '12 TKJ 1', '12 TKJ 2', '12 TKJ 3'];
+        $majors = ['AKL', 'BiD', 'TKJ'];
+
         return view('students.index', [
-            'title'=> $title,
-            'students' => $students
-        ]);
-    }
-
-    public function show(string $id)
-    {
-        $title = "Sistem Sekolah - Detail Siswa";
-        return view('students.show', [
             'title' => $title,
+            'students' => $students,
+            'schoolClasses' => $schoolClasses,
+            'majors' => $majors,
         ]);
     }
 
-    public function create()
+    public function create(): View
     {
-        $title = "Sistem Sekolah - Tambah Siswa";
+        $title = 'Sistem Sekolah - Tambah Siswa';
+
         return view('students.create', [
             'title' => $title,
         ]);
     }
 
-
-    public function edit(string $id)
+    public function store(StoreRequest $request): RedirectResponse
     {
-        $title = "Sistem Sekolah - Edit Siswa";
-        return view('students.edit', [
-            'title'=> $title
+
+        $validatedRequest = $request->validated();
+
+        Student::create($validatedRequest);
+
+        // Handle If Success
+        return redirect()->route('students.index');
+
+    }
+
+    public function show(Student $student): View
+    {
+        $title = 'Sistem Sekolah - Detail Siswa';
+
+        return view('students.show', [
+            'title' => $title,
+            'student' => $student,
         ]);
     }
 
-    public function store()
+    public function edit(Student $student): View
     {
-        return "melakukan penambahan data siswa baru";
+        $title = 'Sistem Sekolah - Edit Siswa';
+
+        return view('students.edit', [
+            'title' => $title,
+            'student' => $student,
+        ]);
     }
 
-    public function update(string $id)
+    public function update(Student $student, UpdateRequest $request): RedirectResponse
     {
-        return "mengubah data siswa dengan ID: {$id}";
+
+        $validatedRequest = $request->validated();
+
+        $student->update($validatedRequest);
+
+        return redirect()->route('students.index');
     }
 
-    public function destroy(string $id)
+    public function destroy(Student $student): RedirectResponse
     {
-        return "menghapus data siswa dengan ID: {$id}";
+        $student->delete();
+
+        return redirect()->route('students.index');
     }
 }
