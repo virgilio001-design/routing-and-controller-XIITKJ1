@@ -4,7 +4,6 @@ namespace App\Http\Requests\Student;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
@@ -24,12 +23,41 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nis' => ['required', 'string', 'max:255', Rule::unique('students', 'nis')->ignore($this->route('student'))],
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['nullable', 'email', 'max:255', Rule::unique('students', 'email')->ignore($this->route('student'))],
-            'gender' => ['required', 'in:L,P'],
-            'class' => ['required', 'string', 'max:255'],
-            'major' => ['required', 'in:AKL,TKJ,BiD'],
+            'nis' => ['required', 'string', 'digits:7', 'unique:students,nis,'.$this->student->id],
+            'name' => ['required', 'string'],
+            'email' => ['required', 'email', 'max:255', 'unique:students,email,'.$this->student->id],
+            'gender' => ['required', 'string', 'in:L,P'],
+            'major' => ['required', 'string', 'in:AKL,TKJ,BiD'],
+            'class' => ['required', 'string'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'nis.required' => 'NIS wajib diisi.',
+            'nis.string' => 'NIS harus berupa string.',
+            'nis.digits' => 'NIS harus terdiri dari 7 digit.',
+            'nis.unique' => 'NIS sudah digunakan.',
+
+            'name.required' => 'Nama wajib diisi.',
+            'name.string' => 'Nama harus berupa string.',
+
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.max' => 'Email maksimal 255 karakter.',
+            'email.unique' => 'Email sudah digunakan.',
+
+            'gender.required' => 'Jenis kelamin wajib diisi.',
+            'gender.string' => 'Jenis kelamin harus berupa string.',
+            'gender.in' => 'Jenis kelamin harus L atau P.',
+
+            'major.required' => 'Jurusan wajib diisi.',
+            'major.string' => 'Jurusan harus berupa string.',
+            'major.in' => 'Jurusan harus AKL, TKJ, atau BiD.',
+
+            'class.required' => 'Kelas wajib diisi.',
+            'class.string' => 'Kelas harus berupa string.',
         ];
     }
 }

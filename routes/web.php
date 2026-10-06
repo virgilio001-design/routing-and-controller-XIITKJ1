@@ -17,49 +17,45 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', [AuthController::class, 'loginView'])->name('login-view')->middleware('guest');
-Route::post('/login', [AuthController::class, 'loginPost'])->name('login-post')->middleware('guest');
-Route::get('/register', [AuthController::class, 'registerView'])->name('register-view')->middleware('guest');
-Route::post('/register', [AuthController::class, 'registerPost'])->name('register-post')->middleware('guest');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::get('/login', [AuthController::class, 'loginView'])->name('login-view');
+Route::post('/login', [AuthController::class, 'loginPost'])->name('login-post');
+Route::get('/register', [AuthController::class, 'registerView'])->name('register-view');
+Route::post('/register', [AuthController::class, 'registerPost'])->name('register-post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::name('students.')->middleware(['auth', 'role:student,teacher'])->prefix('students')->controller(StudentController::class)->group(function () {
+Route::name('students.')->prefix('students')->group(function () {
 
-    Route::get('/', 'index')->name('index');
+    Route::get('/', [StudentController::class, 'index'])->name('index');
 
-    Route::get('/create', 'create')->name('create');
+    Route::get('/create', [StudentController::class, 'create'])->name('create');
 
-    Route::get('/{student}', 'show')->name('show')->whereNumber('student');
+    Route::post('/', [StudentController::class, 'store'])->name('store');
 
-    Route::get('/{student}/edit', 'edit')->name('edit')->whereNumber('student');
+    Route::get('/{student}', [StudentController::class, 'show'])->name('show');
 
-    Route::post('/', 'store')->name('store');
+    Route::get('/{student}/edit', [StudentController::class, 'edit'])->name('edit');
 
-    Route::put('/{student}', 'update')->name('update')->whereNumber('student');
+    Route::put('/{student}', [StudentController::class, 'update'])->name('update');
 
-    Route::delete('/{student}', 'destroy')->name('destroy')->whereNumber('student');
-
+    Route::delete('/{student}/destroy', [StudentController::class, 'destroy'])->name('destroy');
 });
 
-Route::name('teachers.')->middleware(['auth', 'role:teacher'])->prefix('teachers')->controller(TeacherController::class)->group(function () {
+Route::name('teachers.')->prefix('teachers')->group(function () {
+    Route::get('/', [TeacherController::class, 'index'])->name('index');
+    Route::get('/{id}', [TeacherController::class, 'show'])->name('show')->whereNumber('id');
 
-    Route::get('/', 'index')->name('index');
+    Route::get('/create', [TeacherController::class, 'create'])->name('create');
 
-    Route::get('/{id}', 'show')->name('show')->whereNumber('id');
+    Route::get('/{id}/edit', [TeacherController::class, 'edit'])->name('edit');
 
-    Route::get('/create', 'create')->name('create');
+    Route::post('/store', [TeacherController::class, 'store'])->name('store');
 
-    Route::get('/{id}/edit', 'edit')->name('edit')->whereNumber('id');
+    Route::put('/{id}/update', [TeacherController::class, 'update'])->name('update');
 
-    Route::post('/', 'store')->name('store');
-
-    Route::put('/{id}', 'update')->name('update')->whereNumber('id');
-
-    Route::delete('/{id}', 'destroy')->name('destroy')->whereNumber('id');
-
+    Route::delete('/{id}/destroy', [TeacherController::class, 'destroy'])->name('destroy');
 });
 
-Route::name('classes.')->middleware(['auth', 'role:teacher'])->prefix('classes')->group(function () {
+Route::name('classes.')->prefix('classes')->group(function () {
 
     Route::get('/', IndexController::class)->name('index');
 
@@ -76,6 +72,5 @@ Route::name('classes.')->middleware(['auth', 'role:teacher'])->prefix('classes')
     Route::delete('/{id}', DestroyController::class)->name('destroy')->whereNumber('id');
 });
 
-// Management Major (Resource Controller)
-
-Route::resource('majors', MajorsController::class)->middleware(['auth', 'role:teacher']);
+// Manajemen Jurusan Siswa (Resource Controller)
+Route::resource('majors', MajorsController::class);
